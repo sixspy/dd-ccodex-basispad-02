@@ -18,6 +18,9 @@ createApp({
     const fills = ref([]);
     const fundingSnapshots = ref([]);
     const fundingLedgers = ref([]);
+    const fundingRecon = ref({ ok: null, violations: [] });
+    const fundingContention = ref([]);
+    const fundingLinks = ref([]);
     const marks = ref([]);
     const mtm = ref([]);
     const marginStates = ref([]);
@@ -57,6 +60,9 @@ createApp({
         BasisAPI.fills().then((d) => (fills.value = d)),
         BasisAPI.fundingSnapshots().then((d) => (fundingSnapshots.value = d)),
         BasisAPI.fundingLedgers().then((d) => (fundingLedgers.value = d)),
+        BasisAPI.fundingReconcile().then((d) => (fundingRecon.value = d)),
+        BasisAPI.fundingContention().then((d) => (fundingContention.value = d)),
+        BasisAPI.fundingLinks().then((d) => (fundingLinks.value = d)),
         BasisAPI.marks().then((d) => (marks.value = d)),
         BasisAPI.mtm().then((d) => (mtm.value = d)),
         BasisAPI.marginStates().then((d) => (marginStates.value = d)),
@@ -104,7 +110,8 @@ createApp({
 
     return {
       user, page, loginForm, loginErr, title, summary, instruments, sleeves, tickets, fills,
-      fundingSnapshots, fundingLedgers, marks, mtm, marginStates, liqs, batches,
+      fundingSnapshots, fundingLedgers, fundingRecon, fundingContention, fundingLinks,
+      marks, mtm, marginStates, liqs, batches,
       riskLimits, riskRequests, wallets, walletTxs, events, stubs, health,
       refresh, doLogin, doLogout,
     };
@@ -157,7 +164,7 @@ createApp({
       <SleevesView v-else-if="page==='sleeves'" :rows="sleeves" @refresh="refresh" />
       <TicketsView v-else-if="page==='tickets'" :rows="tickets" :instruments="instruments" :sleeves="sleeves" @refresh="refresh" />
       <FillsView v-else-if="page==='fills'" :rows="fills" />
-      <FundingView v-else-if="page==='funding'" :snapshots="fundingSnapshots" :ledgers="fundingLedgers" :instruments="instruments" @refresh="refresh" />
+      <FundingView v-else-if="page==='funding'" :snapshots="fundingSnapshots" :ledgers="fundingLedgers" :recon="fundingRecon" :contention="fundingContention" :links="fundingLinks" :instruments="instruments" @refresh="refresh" />
       <MarksView v-else-if="page==='marks'" :rows="marks" :mtm="mtm" :instruments="instruments" @refresh="refresh" />
       <MarginView v-else-if="page==='margin'" :states="marginStates" :liqs="liqs" :sleeves="sleeves" @refresh="refresh" />
       <SettleView v-else-if="page==='settle'" :batches="batches" @refresh="refresh" />

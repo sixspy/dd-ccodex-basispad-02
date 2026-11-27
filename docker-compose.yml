@@ -1,9 +1,10 @@
-name: basispad
+name: basispad-02
+
 services:
   app:
     build: .
     ports:
-      - "11740:8000"
+      - "12012:8000"
     volumes:
       - ./data:/app/data
     healthcheck:
